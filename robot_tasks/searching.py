@@ -9,7 +9,7 @@ def search_news(browser: Selenium):
     :param term: The search term that the function will use to search for news articles
     """
 
-    accept_cookies()
+    accept_cookies(browser)
 
     # Variables
     term = get_variable("search")

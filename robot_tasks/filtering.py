@@ -217,7 +217,7 @@ def filter_category_news(browser):
     selections = get_variable("category_or_section")
     month = get_variable("months")
 
-    accept_cookies()
+    accept_cookies(browser)
 
     filter_news_by_dates(browser, month)
     set_recent_news(browser)
