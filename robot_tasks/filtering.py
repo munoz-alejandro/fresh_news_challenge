@@ -2,7 +2,9 @@ import sys
 from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import (
+    NoSuchElementException,
+    StaleElementReferenceException)
 from selenium.webdriver.common.by import By
 
 from RPA.Browser.Selenium import Selenium
@@ -95,9 +97,11 @@ def generic_get_values_from_ul(browser: Selenium, type: str):
             text = span_text.replace(news_qty_text, '')
             # Append the text to response
             sections.append(text)
-        except NoSuchElementException as e:
+        except NoSuchElementException:
             print(f"this span ({span_text}) doesn't have news qty")
             sections.append(span_text)
+        except StaleElementReferenceException as e:
+            print(e)
 
     return sections
 

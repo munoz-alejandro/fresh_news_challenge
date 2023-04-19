@@ -11,18 +11,12 @@ from robot_tasks.downloading import download_images
 
 
 if __name__ == "__main__":
-    try:
-        browser = init_process()
-        open_site(browser)
-        search_news(browser)
-        filter_category_news(browser)
-        data = get_news_data(browser)
-        data_with_extra_info, images_data = get_calculated_data(data)
-        create_file(data_with_extra_info)
-        download_images(images_data)
-        close_browser_instance(browser)
-    except Exception as e:
-        filename = get_screenshot_name()
-        browser.capture_page_screenshot(filename=filename)
-        print(e)
-        sys.exit()
+    browser = init_process()
+    open_site(browser)
+    search_news(browser)
+    filter_category_news(browser)
+    data = get_news_data(browser)
+    data_with_extra_info, images_data = get_calculated_data(data)
+    create_file(data_with_extra_info)
+    download_images(images_data)
+    close_browser_instance(browser)
