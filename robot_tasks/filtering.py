@@ -80,16 +80,11 @@ def generic_get_values_from_ul(browser: Selenium, type: str):
     li_span_news_qty = ".//span[@class='css-17fq56o']"
 
     section = browser.get_webelements(li_span_text)
-
-    print(section)
-
     sections = []
 
     # iter WebElements
     for item in section:
         try:
-            print(dir(item))
-            print(item)
             # Get hole span text
             span_text = browser.get_text(item)
             # Get news qty in text
@@ -105,6 +100,7 @@ def generic_get_values_from_ul(browser: Selenium, type: str):
         except StaleElementReferenceException as e:
             print(e)
 
+    print(sections)
     return sections
 
 

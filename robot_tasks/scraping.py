@@ -45,7 +45,10 @@ def get_all_results(browser: Selenium):
                 print("Page doesn't have show more button")
                 condition = False
         except ElementClickInterceptedException:
-            print("Message: element click intercepted: Element 'show_more_button' is not clickable. Other element would receive the clic")
+            print("Message: element click intercepted: Element 'show_more_button' is not clickable. Other element would receive the click")
+            browser.reload_page()
+            counter = 1
+            current_news = 0
         except StaleElementReferenceException:
             """
             For some reason the element was marked as invalid and we should restart this process.
