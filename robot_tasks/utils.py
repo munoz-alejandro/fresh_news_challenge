@@ -64,7 +64,7 @@ def get_screenshot_path():
     return path
 
 def get_screenshot_name():
-    path = get_screenshot_path()
+    path = get_output_path()
     now = datetime.now()
     now_str = now.strftime("%d%m%Y_%H%M%S")
     filename = "screenshot_"+now_str+"_page.png"
