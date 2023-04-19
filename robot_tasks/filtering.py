@@ -76,22 +76,24 @@ def generic_get_values_from_ul(browser: Selenium, type: str):
     button = get_type_or_section_button(type)
     browser.click_button(button)
 
-    li_span_text = "//ul[@class='css-64f9ga']//span[@class='css-16eo56s']"
+    li_span_text = "//li[@class='css-1qtb2wd']//span[@class='css-16eo56s']"
     li_span_news_qty = ".//span[@class='css-17fq56o']"
 
     section = browser.get_webelements(li_span_text)
+
+    print(section)
 
     sections = []
 
     # iter WebElements
     for item in section:
         try:
+            print(type(item))
+            print(item)
             # Get hole span text
-            browser.wait_until_element_is_visible(item)
             span_text = browser.get_text(item)
             # Get news qty in text
             news_qty = item.find_element(By.XPATH, li_span_news_qty)
-            browser.wait_until_element_is_visible(news_qty)
             news_qty_text = browser.get_text(news_qty)
             # Remove the news qty from the text
             text = span_text.replace(news_qty_text, '')
