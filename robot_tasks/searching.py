@@ -16,4 +16,4 @@ def search_news(browser):
     # Actions
     browser.click_element(search_button)
     browser.input_text_when_element_is_visible(search_input, term)
-    browser.click_element_when_visible(search_submit)
+    browser.click_element(search_submit)

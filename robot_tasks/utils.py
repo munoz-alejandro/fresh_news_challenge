@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from RPA.Robocorp.WorkItems import WorkItems
 
 def get_output_path():
@@ -54,3 +55,21 @@ def get_variable(name: str):
     variable = wi.get_work_item_variable(name)
 
     return variable
+
+def get_screenshot_path():
+    output_path = get_output_path()
+    screenshots = "screenshots"
+    path = os.path.join(output_path, screenshots)
+
+    return path
+
+def get_screenshot_name():
+    path = get_screenshot_path()
+    now = datetime.now()
+    now_str = now.strftime("%d%m%Y_%H%M%S")
+    filename = "screenshot_"+now_str+"_page.png"
+
+    filename = os.path.join(path, filename)
+
+    return filename
+

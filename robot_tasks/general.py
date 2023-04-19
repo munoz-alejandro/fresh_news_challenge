@@ -1,6 +1,14 @@
-from .utils import get_output_path
+from .utils import get_output_path, get_screenshot_path
 import os, shutil, sys, json
 from RPA.Robocorp.WorkItems import WorkItems
+from RPA.Browser.Selenium import Selenium
+
+
+def configure_browser():
+    # Set screenshot path
+    screenshot_path = get_screenshot_path()
+    browser = Selenium(screenshot_root_directory=screenshot_path)
+    return browser
 
 def open_site(browser):
     """
@@ -15,7 +23,7 @@ def close_browser_instance(browser):
     """
     browser.close_browser
 
-def check_images_directory(path):
+def check_path_and_clean(path):
     """
     This function checks if a directory exists, and if it does, it deletes all files and subdirectories
     within it, otherwise it creates the directory.
@@ -79,13 +87,18 @@ def check_variables():
         print(e)
         sys.exit("Please add it as Work Item in the Control Room")
 
-def perform_checks():
+def init_process():
     """
     The function performs checks on the output path, including checking the images directory and Excel
-    files.
+    files. Also initialize the browser instance and return it
     """
+    browser = configure_browser()
     check_variables()
     output_path = get_output_path()
     images_path = os.path.join(output_path, "images")
-    check_images_directory(images_path)
+    screenshots_path = os.path.join(output_path, "screenshots")
+    check_path_and_clean(screenshots_path)
+    check_path_and_clean(images_path)
     check_excel_files(output_path)
+
+    return browser
