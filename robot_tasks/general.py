@@ -1,29 +1,31 @@
 from .utils import get_output_path, get_screenshot_path
-import os, shutil, sys, json
+
+import os, shutil, sys
+
 from RPA.Robocorp.WorkItems import WorkItems
 from RPA.Browser.Selenium import Selenium
 
 
-def configure_browser():
+def configure_browser() -> Selenium:
     # Set screenshot path
     screenshot_path = get_screenshot_path()
     browser = Selenium(screenshot_root_directory=screenshot_path)
     return browser
 
-def open_site(browser):
+def open_site(browser: Selenium) -> None:
     """
     Opens the New York Times website in an available web browser.
     """
     url = 'https://www.nytimes.com/'
     browser.open_available_browser(url)
 
-def close_browser_instance(browser):
+def close_browser_instance(browser: Selenium) -> None:
     """
     Close the browser instance
     """
     browser.close_browser
 
-def check_path_and_clean(path):
+def check_path_and_clean(path) -> None:
     """
     This function checks if a directory exists, and if it does, it deletes all files and subdirectories
     within it, otherwise it creates the directory.
@@ -70,7 +72,7 @@ def check_excel_files(path):
                 except Exception as e:
                     print('Failed to delete %s. Reason: %s' % (file_path, e))
 
-def check_variables():
+def check_variables() -> None:
     """
     The function checks if three required variables are present in a Work Item and exits the program if
     they are not.
@@ -87,7 +89,7 @@ def check_variables():
         print(e)
         sys.exit("Please add it as Work Item in the Control Room")
 
-def init_process():
+def init_process() -> Selenium:
     """
     The function performs checks on the output path, including checking the images directory and Excel
     files. Also initialize the browser instance and return it

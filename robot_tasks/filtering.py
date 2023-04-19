@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By
 
 from RPA.Browser.Selenium import Selenium
 
-from .utils import get_variable
+from .utils import get_variable, accept_cookies
 
 def generic_apply_filter(
         browser: Selenium,
@@ -171,6 +171,7 @@ def filter_news_by_dates(browser: Selenium, month: str):
     browser.input_text_when_element_is_visible(end_date, date_ranges["end"])
     browser.press_keys(end_date, "ENTER")
 
+
 def determine_type_or_section(news_section, news_type, options):
     """
     The function determines whether to filter news articles by section or type based on the available
@@ -215,6 +216,8 @@ def determine_type_or_section(news_section, news_type, options):
 def filter_category_news(browser):
     selections = get_variable("category_or_section")
     month = get_variable("months")
+
+    accept_cookies()
 
     filter_news_by_dates(browser, month)
     set_recent_news(browser)

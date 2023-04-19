@@ -86,7 +86,7 @@ def get_new_image(browser: Selenium, new: WebElement):
         image = "N/A"
     return {"image": image, "found":image_found}
 
-def get_new_description(browser: Selenium, new: WebElement):
+def get_new_description(browser: Selenium, new: WebElement) -> None:
     """
     This function retrieves the text from a web element and returns it along with a boolean indicating
     whether the element was found.

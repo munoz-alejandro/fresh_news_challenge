@@ -2,8 +2,8 @@
     {
         "payload": {
             "search": "chatGPT",
-            "category_or_section": ["Business", "Technology"],
-            "months": "2"
+            "category_or_section": ["Business", "Technology","Opinion","Briefing"],
+            "months": "4"
         },
         "files": {
         }

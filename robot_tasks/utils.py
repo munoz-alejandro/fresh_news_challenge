@@ -1,6 +1,7 @@
 import os
 from datetime import datetime
 from RPA.Robocorp.WorkItems import WorkItems
+from RPA.Browser.Selenium import Selenium
 
 def get_output_path():
     """
@@ -73,3 +74,10 @@ def get_screenshot_name():
 
     return filename
 
+def accept_cookies(browser: Selenium) ->  None:
+    accept_button = "//button[@data-testid='GDPR-accept']"
+    try:
+        browser.page_should_contain_element(accept_button)
+        browser.click_button(accept_button)
+    except AssertionError:
+        print("Accept button isn't in page")
