@@ -85,9 +85,11 @@ def generic_get_values_from_ul(browser: Selenium, type: str):
     for item in section:
         try:
             # Get hole span text
+            browser.wait_until_element_is_visible(item)
             span_text = browser.get_text(item)
             # Get news qty in text
             news_qty = item.find_element(By.XPATH, li_span_news_qty)
+            browser.wait_until_element_is_visible(news_qty)
             news_qty_text = browser.get_text(news_qty)
             # Remove the news qty from the text
             text = span_text.replace(news_qty_text, '')

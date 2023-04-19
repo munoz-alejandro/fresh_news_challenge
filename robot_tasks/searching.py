@@ -1,6 +1,7 @@
 from .utils import get_variable
+from RPA.Browser.Selenium import Selenium
 
-def search_news(browser):
+def search_news(browser: Selenium):
     """
     This function searches for news articles using a web browser and a search term.
 
@@ -16,4 +17,4 @@ def search_news(browser):
     # Actions
     browser.click_element(search_button)
     browser.input_text_when_element_is_visible(search_input, term)
-    browser.click_element(search_submit)
+    browser.click_element_when_visible(search_submit)
