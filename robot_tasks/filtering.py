@@ -88,7 +88,7 @@ def generic_get_values_from_ul(browser: Selenium, type: str):
     # iter WebElements
     for item in section:
         try:
-            print(type(item))
+            print(dir(item))
             print(item)
             # Get hole span text
             span_text = browser.get_text(item)
