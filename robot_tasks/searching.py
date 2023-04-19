@@ -1,4 +1,6 @@
-def search_news(browser, term):
+from .utils import get_variable
+
+def search_news(browser):
     """
     This function searches for news articles using a web browser and a search term.
 
@@ -6,6 +8,7 @@ def search_news(browser, term):
     :param term: The search term that the function will use to search for news articles
     """
     # Variables
+    term = get_variable("search")
     search_button = '//button[contains(@class, "css-tkwi90")]'
     search_input = '//input[@data-testid="search-input"]'
     search_submit = '//button[@data-test-id="search-submit"]'

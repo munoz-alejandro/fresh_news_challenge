@@ -2,7 +2,7 @@ from openpyxl import Workbook
 import os
 from datetime import datetime
 
-from .utils import get_output_path
+from .utils import get_output_path, get_variable
 
 
 class CreateWorkbook:
@@ -74,6 +74,7 @@ class CreateWorkbook:
         self.write_content()
         self.save_document()
 
-def create_file(data, search):
+def create_file(data):
+    search = get_variable("search")
     create_workbook = CreateWorkbook(data, search)
     create_workbook.create_excel_file()

@@ -1,8 +1,20 @@
+import sys
 from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
-import sys
 
-def generic_apply_filter(browser, options, selected_items, type):
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
+
+from RPA.Browser.Selenium import Selenium
+
+from .utils import get_variable
+
+def generic_apply_filter(
+        browser: Selenium,
+        options: list,
+        selected_items: list,
+        type: str
+        ):
     """
     This function applies a filter to a web browser based on selected items and a type.
 
@@ -25,7 +37,7 @@ def generic_apply_filter(browser, options, selected_items, type):
         browser.click_element(input)
 
 
-def get_type_or_section_button(type):
+def get_type_or_section_button(type: str):
     """
     The function returns a button xpath based on the input type.
 
@@ -45,42 +57,46 @@ def get_type_or_section_button(type):
 
 
 
-def generic_get_values_from_ul(browser, type):
+def generic_get_values_from_ul(browser: Selenium, type: str):
     """
-    This function retrieves values from a specific type of unordered list (ul) on a webpage using a web
-    browser object.
+    This function retrieves values from a specific type of unordered list (ul) element on a webpage
+    using Selenium.
 
-    :param browser: The web browser object used to interact with the webpage
-    :param type: The type parameter is a string that represents the type of section to retrieve values
-    from. It is used to locate and click the corresponding button on the webpage
-    :return: a list of section names extracted from a web page using the provided browser object and a
-    specified type.
+    :param browser: The Selenium browser object used to interact with the web page
+    :type browser: Selenium
+    :param type: The "type" parameter is a string that specifies the type of section to retrieve values
+    from. It is used to locate and click the corresponding button before retrieving the values
+    :type type: str
+    :return: a list of strings, which are the text values of the sections obtained from an unordered
+    list (ul) element on a web page. The function uses Selenium to interact with the web page and
+    extract the text values.
     """
-
     button = get_type_or_section_button(type)
     browser.click_button(button)
 
-    li_span = "//ul[@class='css-64f9ga']//label/span"
-    li_news_number_span = "//ul[@class='css-64f9ga']//label/span/span"
+    li_span_text = "//ul[@class='css-64f9ga']//span[@class='css-16eo56s']"
+    li_span_news_qty = ".//span[@class='css-17fq56o']"
 
-    section = browser.get_webelements(li_span)
-    section_number_count = browser.get_webelements(li_news_number_span)
+    section = browser.get_webelements(li_span_text)
 
-    news_number, sections = [], []
+    sections = []
 
-    for item in section_number_count:
-        text = browser.get_text(item)
-        news_number.append(text)
-
-    counter = 0
+    # iter WebElements
     for item in section:
-        text = browser.get_text(item)
-        if counter != 0:
-            text_to_remove = str(news_number[counter-1])
-            text = text.replace(text_to_remove, '')
-        sections.append(text)
+        try:
+            # Get hole span text
+            span_text = browser.get_text(item)
+            # Get news qty in text
+            news_qty = item.find_element(By.XPATH, li_span_news_qty)
+            news_qty_text = browser.get_text(news_qty)
+            # Remove the news qty from the text
+            text = span_text.replace(news_qty_text, '')
+            # Append the text to response
+            sections.append(text)
+        except NoSuchElementException as e:
+            print(f"this span ({span_text}) doesn't have news qty")
+            sections.append(span_text)
 
-        counter = counter + 1
     return sections
 
 
@@ -120,10 +136,10 @@ def get_search_months(month):
     return {"start":start_date, "end":end_date}
 
 
-def set_recent_news(browser):
+def set_recent_news(browser: Selenium):
     """
     This function sets the sorting option for recent news articles in a web browser.
-    
+
     :param browser: The browser parameter is likely an instance of a web browser object, such as
     Selenium's WebDriver, that is being used to automate interactions with a web page
     """
@@ -132,7 +148,7 @@ def set_recent_news(browser):
     browser.select_from_list_by_value(sort_select_element, value)
 
 
-def filter_news_by_dates(browser, month):
+def filter_news_by_dates(browser: Selenium, month: str):
     """
     This function filters news articles by specific dates using a web browser.
 
@@ -153,8 +169,50 @@ def filter_news_by_dates(browser, month):
     browser.input_text_when_element_is_visible(end_date, date_ranges["end"])
     browser.press_keys(end_date, "ENTER")
 
+def determine_type_or_section(news_section, news_type, options):
+    """
+    The function determines whether to filter news articles by section or type based on the available
+    options.
 
-def filter_category_news(browser, sections, categories, month):
+    :param news_section: It is a list of strings representing the available news sections (e.g.
+    "politics", "sports", "entertainment")
+    :param news_type: This parameter is a list of all the types of news articles available, such as
+    "politics", "sports", "entertainment", etc
+    :param options: The list of options that the user has selected to filter the news articles. It could
+    contain one or more sections or types of news articles, or just the string "Any" if the user has not
+    selected any specific filter
+    :return: a string indicating whether to filter by news section or news type based on the available
+    options. The function returns "section" if there are more options available for news sections,
+    "type" if there are more options available for news types, and "section" if the number of options
+    available for both news sections and news types are equal.
+    """
+    # default if only "Any" is in list
+    if options == ["Any"]:
+        return "section"
+
+    # find sections or types found in available options
+    sections_found = list(set(options).intersection(news_section))
+    types_found = list(set(options).intersection(news_type))
+
+    # count found results
+    count_types = len(types_found)
+    count_sections = len(sections_found)
+
+    # compare who has more found items to determine the filters to apply
+    if count_types > count_sections:
+        return "type"
+
+    if count_sections > count_types:
+        return "section"
+
+    # if equals default to section
+    if count_sections == count_types:
+        return "section"
+
+
+def filter_category_news(browser):
+    selections = get_variable("category_or_section")
+    month = get_variable("months")
 
     filter_news_by_dates(browser, month)
     set_recent_news(browser)
@@ -162,17 +220,18 @@ def filter_category_news(browser, sections, categories, month):
     news_sections = generic_get_values_from_ul(browser, "section")
     news_types = generic_get_values_from_ul(browser, "type")
 
-    sections_count = len(sections)
-    categories_count = len(categories)
+    selections_count = len(selections)
+    if selections_count == 0:
+        selections = ["Any"]
 
-    if sections_count == 0 and categories_count == 0:
-        sections = ["Any"]
-        categories = ["Any"]
-        generic_apply_filter(browser, news_sections, sections, "section")
-        generic_apply_filter(browser, news_types, categories, "type")
-    elif sections_count > categories_count:
-        generic_apply_filter(browser, news_sections, sections, "section")
-    elif categories_count > sections_count:
-        generic_apply_filter(browser, news_types, categories, "type")
-    else:
-        generic_apply_filter(browser, news_sections, sections, "section")
+    type_or_section = determine_type_or_section(
+            news_sections,
+            news_types,
+            selections
+        )
+
+    if type_or_section == "section":
+        generic_apply_filter(browser, news_sections, selections, type_or_section)
+
+    if type_or_section == "type":
+        generic_apply_filter(browser, news_types, selections, type_or_section)

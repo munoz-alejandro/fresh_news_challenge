@@ -1,4 +1,5 @@
 import os
+from RPA.Robocorp.WorkItems import WorkItems
 
 def get_output_path():
     """
@@ -43,3 +44,13 @@ def clean_image_url(image_url: str):
     filename = filename.split('?')[0]
 
     return filename
+
+
+
+def get_variable(name: str):
+    wi = WorkItems()
+    wi.get_input_work_item()
+
+    variable = wi.get_work_item_variable(name)
+
+    return variable

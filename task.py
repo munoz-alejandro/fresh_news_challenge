@@ -1,4 +1,6 @@
 from RPA.Browser.Selenium import Selenium
+
+import logging
 import os
 
 from robot_tasks.general import open_site, close_browser_instance, perform_checks
@@ -10,21 +12,17 @@ from robot_tasks.calculations import get_calculated_data
 from robot_tasks.downloading import download_images
 
 
+
+
 if __name__ == "__main__":
-
-    env = perform_checks()
-
-    search = env["search"]
-    sections = env["sections"]
-    categories = env["categories"]
-    months = env["months"]
+    perform_checks()
 
     browser = Selenium()
     open_site(browser)
-    search_news(browser, search)
-    filter_category_news(browser, sections, categories, months)
+    search_news(browser)
+    filter_category_news(browser)
     data = get_news_data(browser)
-    data_with_extra_info, images_data = get_calculated_data(data, search)
-    create_file(data_with_extra_info, search)
+    data_with_extra_info, images_data = get_calculated_data(data)
+    create_file(data_with_extra_info)
     download_images(images_data)
     close_browser_instance(browser)

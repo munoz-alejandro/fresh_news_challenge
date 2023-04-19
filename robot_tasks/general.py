@@ -1,5 +1,6 @@
 from .utils import get_output_path
 import os, shutil, sys, json
+from RPA.Robocorp.WorkItems import WorkItems
 
 def open_site(browser):
     """
@@ -61,45 +62,30 @@ def check_excel_files(path):
                 except Exception as e:
                     print('Failed to delete %s. Reason: %s' % (file_path, e))
 
+def check_variables():
+    """
+    The function checks if three required variables are present in a Work Item and exits the program if
+    they are not.
+    """
+    try:
+        wi = WorkItems()
+        wi.get_input_work_item()
 
-def get_env_variables():
-    #try:
-    search = os.environ["SEARCH"]
-    months = os.environ["MONTHS"]
-    sections_txt = os.environ["SECTIONS"].replace(
-            ' , ', ', '
-        ).replace(
-            ' ,', ', '
-        ).replace(
-            ', ', ','
-        )
-    sections =  sections_txt.split(",")
-    categories_txt = os.environ["CATEGORIES"].replace(
-            ' , ', ', '
-        ).replace(
-            ' ,', ', '
-        ).replace(
-            ', ', ','
-        )
-    categories =  categories_txt.split(",")
-
-    return {
-        'search': search,
-        'months': months,
-        'sections': sections,
-        'categories': categories
-    }
-
+        SEARCH = wi.get_work_item_variable("search")
+        CATEGORY_OR_SECTION = wi.get_work_item_variable("category_or_section")
+        MONTHS = wi.get_work_item_variable("months")
+    except KeyError as e:
+        print("This robot needs 3 variables to run: search, category_or_section and months")
+        print(e)
+        sys.exit("Please add it as Work Item in the Control Room")
 
 def perform_checks():
     """
     The function performs checks on the output path, including checking the images directory and Excel
     files.
     """
-    env = get_env_variables()
+    check_variables()
     output_path = get_output_path()
     images_path = os.path.join(output_path, "images")
     check_images_directory(images_path)
     check_excel_files(output_path)
-
-    return env
