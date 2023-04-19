@@ -79,5 +79,6 @@ def accept_cookies(browser: Selenium) ->  None:
     try:
         browser.page_should_contain_element(accept_button)
         browser.click_button(accept_button)
+        browser.reload_page()
     except AssertionError:
         print("Accept button isn't in page")
