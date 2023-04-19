@@ -30,7 +30,7 @@ def get_all_results(browser: Selenium):
 
             #Prevents unnecesary cliks
             if news_qty != current_news:
-                browser.click_element_when_visible(show_more_button)
+                browser.wait_until_element_is_visible(show_more_button)
                 counter = counter+1
                 current_news = news_qty
             else:
@@ -44,8 +44,9 @@ def get_all_results(browser: Selenium):
             else:
                 print("Page doesn't have show more button")
                 condition = False
-        except ElementClickInterceptedException:
-            print("Message: element click intercepted: Element 'show_more_button' is not clickable. Other element would receive the click")
+        except ElementClickInterceptedException as e:
+            # print("Element 'show_more_button' is not clickable. Other element would receive the click")
+            print(e)
             browser.reload_page()
             counter = 1
             current_news = 0
