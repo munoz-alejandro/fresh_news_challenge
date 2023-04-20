@@ -2,7 +2,7 @@ from .utils import get_variable, accept_cookies
 from RPA.Browser.Selenium import Selenium
 import logging
 
-def search_news(browser: Selenium):
+def search_news(browser: Selenium) -> None:
     """
     This function searches for news articles using a web browser and a search term.
 

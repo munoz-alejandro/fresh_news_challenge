@@ -9,15 +9,15 @@ from .utils import get_output_path, get_variable
 class CreateWorkbook:
     def __init__(
         self,
-        data,
-        search
+        data: list,
+        search: str
     ):
         self.workbook = Workbook()
         self.worksheet = self.workbook.active
         self.data = data
         self.search = search
 
-    def write_headers(self):
+    def write_headers(self) -> None:
         """
         This function writes a list of headers to a worksheet in a spreadsheet.
         """
@@ -32,13 +32,13 @@ class CreateWorkbook:
 
         self.worksheet.append(headers)
 
-    def set_title(self):
+    def set_title(self) -> None:
         """
         This function sets the title of a worksheet to a string representation of a search term.
         """
         self.worksheet.title = str(self.search)
 
-    def write_content(self):
+    def write_content(self) -> None:
         """
         The function writes the data in rows to a worksheet.
         """
@@ -48,7 +48,7 @@ class CreateWorkbook:
             self.worksheet.append(row)
 
 
-    def save_document(self):
+    def save_document(self) -> None:
         """
         This function saves a workbook as an Excel file in a specified directory.
 
@@ -65,7 +65,7 @@ class CreateWorkbook:
 
         self.workbook.save(final_path)
 
-    def create_excel_file(self):
+    def create_excel_file(self) -> None:
         """
         This function creates an Excel file by setting the title, writing headers and content, and
         saving the document.
@@ -75,7 +75,7 @@ class CreateWorkbook:
         self.write_content()
         self.save_document()
 
-def create_file(data):
+def create_file(data: list) -> None:
     logging.info("Starting [excel][create_file]")
     search = get_variable("search")
     create_workbook = CreateWorkbook(data, search)

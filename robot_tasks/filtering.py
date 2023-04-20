@@ -6,7 +6,6 @@ from selenium.common.exceptions import (
     NoSuchElementException,
     StaleElementReferenceException)
 from selenium.webdriver.common.by import By
-
 from RPA.Browser.Selenium import Selenium
 
 from .utils import get_variable, accept_cookies
@@ -16,7 +15,7 @@ def generic_apply_filter(
         options: list,
         selected_items: list,
         type: str
-        ):
+        ) -> None:
     """
     This function applies a filter to a web browser based on selected items and a type.
 
@@ -39,7 +38,7 @@ def generic_apply_filter(
         browser.click_element(input)
 
 
-def get_type_or_section_button(type: str):
+def get_type_or_section_button(type: str) -> str:
     """
     The function returns a button xpath based on the input type.
 
@@ -59,7 +58,7 @@ def get_type_or_section_button(type: str):
 
 
 
-def generic_get_values_from_ul(browser: Selenium, type: str):
+def generic_get_values_from_ul(browser: Selenium, type: str) -> list:
     """
     This function retrieves values from a specific type of unordered list (ul) element on a webpage
     using Selenium.
@@ -101,7 +100,7 @@ def generic_get_values_from_ul(browser: Selenium, type: str):
     return sections
 
 
-def get_search_months(month):
+def get_search_months(month: str) -> dict:
     """
     This function returns the start and end dates for a search period of either 1 or 2 months ago.
     :return: A dictionary containing the start and end dates for a search period. The start and end
@@ -137,7 +136,7 @@ def get_search_months(month):
     return {"start":start_date, "end":end_date}
 
 
-def set_recent_news(browser: Selenium):
+def set_recent_news(browser: Selenium) -> None:
     """
     This function sets the sorting option for recent news articles in a web browser.
 
@@ -149,7 +148,7 @@ def set_recent_news(browser: Selenium):
     browser.select_from_list_by_value(sort_select_element, value)
 
 
-def filter_news_by_dates(browser: Selenium, month: str):
+def filter_news_by_dates(browser: Selenium, month: str) -> None:
     """
     This function filters news articles by specific dates using a web browser.
 
@@ -171,7 +170,7 @@ def filter_news_by_dates(browser: Selenium, month: str):
     browser.press_keys(end_date, "ENTER")
 
 
-def determine_type_or_section(news_section, news_type, options):
+def determine_type_or_section(news_section: list, news_type: list, options: list) -> str:
     """
     The function determines whether to filter news articles by section or type based on the available
     options.
@@ -212,7 +211,7 @@ def determine_type_or_section(news_section, news_type, options):
         return "section"
 
 
-def filter_category_news(browser):
+def filter_category_news(browser: Selenium) -> None:
     logging.info("Starting [filtering][filter_category_news]")
     selections = get_variable("category_or_section")
     month = get_variable("months")

@@ -4,7 +4,7 @@ from RPA.Robocorp.WorkItems import WorkItems
 from RPA.Browser.Selenium import Selenium
 import logging
 
-def get_output_path():
+def get_output_path() -> str:
     """
     This function returns the absolute path of the "output" directory located in the parent directory of
     the current file.
@@ -23,7 +23,7 @@ def get_output_path():
 
     return output_dir
 
-def clean_image_url(image_url: str):
+def clean_image_url(image_url: str) -> str:
     """
     The function takes an image URL and returns only the filename by removing the domain and any query
     parameters.
@@ -50,7 +50,14 @@ def clean_image_url(image_url: str):
 
 
 
-def get_variable(name: str):
+def get_variable(name: str) -> str:
+    """
+    This function retrieves defined variables from WorkItems.
+
+    :param name: The name of the variable that we want to retrieve from the work item
+    :type name: str
+    :return: the value of the variable with the given name that is stored in the current work item.
+    """
     wi = WorkItems()
     wi.get_input_work_item()
 
@@ -58,14 +65,26 @@ def get_variable(name: str):
 
     return variable
 
-def get_screenshot_path():
+def get_screenshot_path() -> str:
+    """
+    This function returns the path to the "screenshots" folder within the output path.
+    :return: a string representing the path to the "screenshots" directory within the output directory.
+    """
     output_path = get_output_path()
     screenshots = "screenshots"
     path = os.path.join(output_path, screenshots)
 
     return path
 
-def get_screenshot_name():
+def get_screenshot_name() -> str:
+    """
+    This function generates a filename for a screenshot with the current date and time and saves it in a
+    specified output path.
+    :return: The function `get_screenshot_name()` returns a string representing the filename of a
+    screenshot image file. The filename includes the current date and time in the format
+    "screenshot_DDMMYYYY_HHMMSS_page.png", where "DD" represents the day, "MM" represents the month,
+    "YYYY" represents the year, "HH" represents the hour, "MM" represents the minute,
+    """
     path = get_output_path()
     now = datetime.now()
     now_str = now.strftime("%d%m%Y_%H%M%S")
@@ -76,6 +95,15 @@ def get_screenshot_name():
     return filename
 
 def accept_cookies(browser: Selenium) ->  None:
+    """
+    This function accepts cookies on a webpage using Selenium.
+
+    :param browser: The parameter "browser" is an instance of the Selenium class, which is used to
+    automate web browsers for testing and web scraping purposes. It allows the script to interact with
+    the web page and perform actions such as clicking buttons, filling out forms, and navigating through
+    pages
+    :type browser: Selenium
+    """
     accept_button = "//button[@data-testid='GDPR-accept']"
     try:
         browser.page_should_contain_element(accept_button)

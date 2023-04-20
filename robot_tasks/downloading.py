@@ -6,7 +6,7 @@ import logging
 from .utils import get_output_path
 
 
-def count_items_in_directory(path):
+def count_items_in_directory(path: str) -> int:
     """
     The function counts the number of files in a given directory path.
 
@@ -21,7 +21,7 @@ def count_items_in_directory(path):
 
     return count
 
-def download(data, image_folder):
+def download(data: list, image_folder: str) -> None:
     """
     The function downloads images from URLs in a given data set and saves them to a specified folder.
 
@@ -47,7 +47,7 @@ def zip_images(output_path: str, directory: str) -> None:
     filename = os.path.join(output_path, "images")
     shutil.make_archive(filename, 'zip', directory)
 
-def download_images(data: list):
+def download_images(data: list) -> None:
     """
     This function downloads a list of images from URLs and saves them to a specified output path.
 

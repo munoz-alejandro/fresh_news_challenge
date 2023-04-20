@@ -1,7 +1,7 @@
 import re, logging
 from .utils import clean_image_url, get_variable
 
-def find_money_in_text(text: str):
+def find_money_in_text(text: str) -> bool:
     """
     The function `find_money_in_text` uses regular expressions to check if a given text contains a valid
     money format.
@@ -22,7 +22,7 @@ def find_money_in_text(text: str):
 
     return found
 
-def count_search_phrases(text: str, search: str):
+def count_search_phrases(text: str, search: str) -> int:
     # Does not include overlapping matches
     # Case insensitive
     count = text.lower().count(search.lower())

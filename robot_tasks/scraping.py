@@ -12,7 +12,7 @@ from selenium.common.exceptions import (
 
 import logging
 
-def get_all_results(browser: Selenium):
+def get_all_results(browser: Selenium) -> None:
     """
     The function clicks on a "show more" button on a webpage until the button is no longer present.
 
@@ -61,7 +61,7 @@ def get_all_results(browser: Selenium):
             browser.reload_page()
 
 
-def get_new_image(browser: Selenium, new: WebElement):
+def get_new_image(browser: Selenium, new: WebElement) -> dict:
     """
     This function takes a Selenium browser and an image element, attempts to retrieve the image source
     attribute, and returns a dictionary with the image source and a boolean indicating whether the image
@@ -86,7 +86,7 @@ def get_new_image(browser: Selenium, new: WebElement):
         image = "N/A"
     return {"image": image, "found":image_found}
 
-def get_new_description(browser: Selenium, new: WebElement) -> None:
+def get_new_description(browser: Selenium, new: WebElement) -> dict:
     """
     This function retrieves the text from a web element and returns it along with a boolean indicating
     whether the element was found.
@@ -113,7 +113,7 @@ def get_new_description(browser: Selenium, new: WebElement) -> None:
     return {"description": description, "found":description_found}
 
 
-def get_data_from_entries(browser: Selenium):
+def get_data_from_entries(browser: Selenium) -> list:
     """
     This function extracts data from a webpage using XPaths and returns a list of news data.
 
@@ -148,7 +148,7 @@ def get_data_from_entries(browser: Selenium):
 
     return news_data
 
-def get_news_data(browser: Selenium):
+def get_news_data(browser: Selenium) -> list:
     """
     This function expands all news and retrieves data including title, date, description, and image from
     entries using a Selenium browser.
