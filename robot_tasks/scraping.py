@@ -10,6 +10,8 @@ from selenium.common.exceptions import (
     StaleElementReferenceException,
     NoSuchElementException)
 
+import logging
+
 def get_all_results(browser: Selenium):
     """
     The function clicks on a "show more" button on a webpage until the button is no longer present.
@@ -172,12 +174,12 @@ def get_news_data(browser: Selenium):
     represented as a list containing the following information: title, date, description, and image.
     """
 
-    print("expanding all news")
+    logging.INFO("Starting [scraping][get_news_data]")
     get_all_results(browser)
-    print("getting news values")
 
     # data information contains
     # 0 title | 1 date | 2 description | 3 image
     data = get_data_from_entries(browser)
 
+    logging.INFO("Starting [scraping][get_news_data]")
     return data

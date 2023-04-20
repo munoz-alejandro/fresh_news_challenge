@@ -1,4 +1,4 @@
-import re
+import re, logging
 from .utils import clean_image_url, get_variable
 
 def find_money_in_text(text: str):
@@ -29,7 +29,7 @@ def count_search_phrases(text: str, search: str):
     return count
 
 
-def get_calculated_data(data: list):
+def get_calculated_data(data: list) -> list:
     """
     The function takes a list of data and adds extra information to each item in the list, including
     whether the text contains money and the count of search phrases.
@@ -43,6 +43,7 @@ def get_calculated_data(data: list):
     money (as determined by the `find_money_in_text` function) and the count of search phrases in the
     text (as determined by the `count_search_phrases` function)
     """
+    logging.INFO("Starting [calculations][get_calculated_data]")
 
     search = get_variable("search")
     # data information contains
@@ -77,7 +78,8 @@ def get_calculated_data(data: list):
 
     print(len(data_with_extra_info))
 
-    return data_with_extra_info, images_data
+    logging.INFO("Ending [calculations][get_calculated_data]")
+    return [data_with_extra_info, images_data]
 
 
 

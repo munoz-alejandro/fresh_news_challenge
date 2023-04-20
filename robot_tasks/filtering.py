@@ -1,4 +1,4 @@
-import sys
+import logging
 from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 
@@ -114,7 +114,7 @@ def get_search_months(month):
     """
     month = int(month)
     if month < 0:
-        sys.exit("month can be lower than 0")
+        raise AssertionError("Month can't be lower than 0")
 
     search_months = 1 if month == 0 else month
 
@@ -216,6 +216,7 @@ def determine_type_or_section(news_section, news_type, options):
 
 
 def filter_category_news(browser):
+    logging.INFO("Starting [filtering][filter_category_news]")
     selections = get_variable("category_or_section")
     month = get_variable("months")
 
@@ -242,3 +243,5 @@ def filter_category_news(browser):
 
     if type_or_section == "type":
         generic_apply_filter(browser, news_types, selections, type_or_section)
+
+    logging.INFO("Ending [filtering][filter_category_news]")

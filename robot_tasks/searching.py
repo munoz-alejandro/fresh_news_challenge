@@ -1,5 +1,6 @@
 from .utils import get_variable, accept_cookies
 from RPA.Browser.Selenium import Selenium
+import logging
 
 def search_news(browser: Selenium):
     """
@@ -8,6 +9,7 @@ def search_news(browser: Selenium):
     :param browser: The web browser object that is being used to interact with the webpage
     :param term: The search term that the function will use to search for news articles
     """
+    logging.INFO("Starting [general][open_site]")
 
     accept_cookies(browser)
 

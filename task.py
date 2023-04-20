@@ -1,4 +1,4 @@
-import sys
+import logging
 
 from robot_tasks.utils import get_screenshot_name
 from robot_tasks.general import open_site, close_browser_instance, init_process
@@ -24,5 +24,4 @@ if __name__ == "__main__":
     except Exception as e:
         filename = get_screenshot_name()
         browser.capture_page_screenshot(filename=filename)
-        print(e)
-        sys.exit()
+        logging.ERROR(e)

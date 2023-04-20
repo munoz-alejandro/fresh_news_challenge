@@ -1,6 +1,7 @@
-from openpyxl import Workbook
-import os
+import os, logging
 from datetime import datetime
+
+from openpyxl import Workbook
 
 from .utils import get_output_path, get_variable
 
@@ -75,6 +76,8 @@ class CreateWorkbook:
         self.save_document()
 
 def create_file(data):
+    logging.INFO("Starting [excel][create_file]")
     search = get_variable("search")
     create_workbook = CreateWorkbook(data, search)
     create_workbook.create_excel_file()
+    logging.INFO("Starting [excel][create_file]")

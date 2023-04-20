@@ -1,12 +1,18 @@
 from .utils import get_output_path, get_screenshot_path
 
 import os, shutil, sys
+import logging
 
 from RPA.Robocorp.WorkItems import WorkItems
 from RPA.Browser.Selenium import Selenium
 
 
+
 def configure_browser() -> Selenium:
+    """
+    This function configures a Selenium browser instance with a specified screenshot path.
+    :return: an instance of the Selenium class, which has been configured with a screenshot path.
+    """
     # Set screenshot path
     screenshot_path = get_screenshot_path()
     browser = Selenium(screenshot_root_directory=screenshot_path)
@@ -16,14 +22,18 @@ def open_site(browser: Selenium) -> None:
     """
     Opens the New York Times website in an available web browser.
     """
+    logging.INFO("Starting [general][open_site]")
     url = 'https://www.nytimes.com/'
     browser.open_available_browser(url)
+    logging.INFO("Ending [general][open_site]")
 
 def close_browser_instance(browser: Selenium) -> None:
     """
     Close the browser instance
     """
+    logging.INFO("Starting [general][close_browser_instance]")
     browser.close_browser
+    logging.INFO("Starting [general][close_browser_instance]")
 
 def check_path_and_clean(path) -> None:
     """
@@ -94,6 +104,7 @@ def init_process() -> Selenium:
     The function performs checks on the output path, including checking the images directory and Excel
     files. Also initialize the browser instance and return it
     """
+    logging.INFO("Starting [general][init_process]")
     browser = configure_browser()
     check_variables()
     output_path = get_output_path()
@@ -103,4 +114,5 @@ def init_process() -> Selenium:
     check_path_and_clean(images_path)
     check_excel_files(output_path)
 
+    logging.INFO("Ending [general][init_process]")
     return browser
