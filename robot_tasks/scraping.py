@@ -40,31 +40,24 @@ def get_all_results(browser: Selenium):
                 continue
         except AssertionError as e:
             if "Location should have been" in repr(e):
-                print("Incorrect location, reloading page")
+                logging.error("Incorrect url, reloading page")
                 browser.go_back()
                 counter = 1
             else:
-                print("Page doesn't have show more button")
+                logging.error("Page doesn't have show more button")
                 condition = False
         except ElementClickInterceptedException as e:
-            # print("Element 'show_more_button' is not clickable. Other element would receive the click")
-            print(e)
+            logging.error("Element 'show_more_button' is not clickable. Other element would receive the click.")
+            logging.error("Restart process")
             browser.reload_page()
             counter = 1
             current_news = 0
         except StaleElementReferenceException:
-            """
-            For some reason the element was marked as invalid and we should restart this process.
-            """
-            print("stale element reference: element is not attached to the page document")
-            print("realoading page and starting again")
+            logging.error("For some reason the element was marked as invalid and we should restart this process.")
             browser.reload_page()
             counter = 1
         except ElementNotFound:
-            """
-            Sometimes the element can't be found after the iterations
-            """
-            print("Element can't be found")
+            logging.error("Sometimes the element can't be found after the iterations")
             browser.reload_page()
 
 
@@ -89,6 +82,7 @@ def get_new_image(browser: Selenium, new: WebElement):
         image = browser.get_element_attribute(image_element, "src")
         image_found = True
     except NoSuchElementException as e:
+        logging.error("Can't find element")
         image = "N/A"
     return {"image": image, "found":image_found}
 
@@ -114,6 +108,7 @@ def get_new_description(browser: Selenium, new: WebElement) -> None:
         description = browser.get_text(description_element)
         description_found = True
     except NoSuchElementException as e:
+        logging.error("Can't find element")
         description = "N/A"
     return {"description": description, "found":description_found}
 
@@ -134,14 +129,7 @@ def get_data_from_entries(browser: Selenium):
     images_xpath = "//li[@data-testid='search-bodega-result']//img"
 
     news_count = browser.get_element_count(main_xpath)
-    images_count = browser.get_element_count(images_xpath)
-    descriptions_count = browser.get_element_count(descriptions_xpath)
-
     news = browser.get_webelements(main_xpath)
-    print(news_count)
-
-    print(f"There are {news_count-images_count} less images than news")
-    print(f"There are {news_count-descriptions_count} less descriptions than news")
 
     news_data = []
     for new in range(news_count):
@@ -158,7 +146,6 @@ def get_data_from_entries(browser: Selenium):
         if new_data not in news_data:
             news_data.append([title, date, description["description"], image["image"]])
 
-    print(len(news_data))
     return news_data
 
 def get_news_data(browser: Selenium):
@@ -174,12 +161,12 @@ def get_news_data(browser: Selenium):
     represented as a list containing the following information: title, date, description, and image.
     """
 
-    logging.INFO("Starting [scraping][get_news_data]")
+    logging.info("Starting [scraping][get_news_data]")
     get_all_results(browser)
 
     # data information contains
     # 0 title | 1 date | 2 description | 3 image
     data = get_data_from_entries(browser)
 
-    logging.INFO("Starting [scraping][get_news_data]")
+    logging.info("Starting [scraping][get_news_data]")
     return data

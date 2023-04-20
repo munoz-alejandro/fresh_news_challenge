@@ -9,6 +9,8 @@ from robot_tasks.excel import create_file
 from robot_tasks.calculations import get_calculated_data
 from robot_tasks.downloading import download_images
 
+logging.basicConfig(level=logging.INFO)
+
 
 if __name__ == "__main__":
     try:

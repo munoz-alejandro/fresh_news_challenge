@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 from RPA.Robocorp.WorkItems import WorkItems
 from RPA.Browser.Selenium import Selenium
+import logging
 
 def get_output_path():
     """
@@ -81,4 +82,4 @@ def accept_cookies(browser: Selenium) ->  None:
         browser.click_button(accept_button)
         browser.reload_page()
     except AssertionError:
-        print("Accept button isn't in page")
+        logging.error("Can't find cookies button")

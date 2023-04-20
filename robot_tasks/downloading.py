@@ -44,7 +44,7 @@ def download(data, image_folder):
                 handler.write(img_data)
 
 def zip_images(output_path: str, directory: str) -> None:
-    filename = os.path.join(output_path, "images.zip")
+    filename = os.path.join(output_path, "images")
     shutil.make_archive(filename, 'zip', directory)
 
 def download_images(data: list):
@@ -55,7 +55,7 @@ def download_images(data: list):
     element of each tuple is the image name and the second element is the image URL
     :type data: list
     """
-    logging.INFO("Starting [downloading][download_images]")
+    logging.info("Starting [downloading][download_images]")
     #  0 image name | 1 image url
     output_path = get_output_path()
     image_folder = os.path.join(output_path, 'images')
@@ -91,4 +91,4 @@ def download_images(data: list):
             condition = False
 
     zip_images(output_path, image_folder)
-    logging.INFO("Ending [downloading][download_images]")
+    logging.info("Ending [downloading][download_images]")

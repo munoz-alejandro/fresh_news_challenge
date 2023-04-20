@@ -76,8 +76,8 @@ class CreateWorkbook:
         self.save_document()
 
 def create_file(data):
-    logging.INFO("Starting [excel][create_file]")
+    logging.info("Starting [excel][create_file]")
     search = get_variable("search")
     create_workbook = CreateWorkbook(data, search)
     create_workbook.create_excel_file()
-    logging.INFO("Starting [excel][create_file]")
+    logging.info("Starting [excel][create_file]")

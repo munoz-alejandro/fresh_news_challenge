@@ -22,18 +22,18 @@ def open_site(browser: Selenium) -> None:
     """
     Opens the New York Times website in an available web browser.
     """
-    logging.INFO("Starting [general][open_site]")
+    logging.info("Starting [general][open_site]")
     url = 'https://www.nytimes.com/'
     browser.open_available_browser(url)
-    logging.INFO("Ending [general][open_site]")
+    logging.info("Ending [general][open_site]")
 
 def close_browser_instance(browser: Selenium) -> None:
     """
     Close the browser instance
     """
-    logging.INFO("Starting [general][close_browser_instance]")
+    logging.info("Starting [general][close_browser_instance]")
     browser.close_browser
-    logging.INFO("Starting [general][close_browser_instance]")
+    logging.info("Starting [general][close_browser_instance]")
 
 def check_path_and_clean(path) -> None:
     """
@@ -54,9 +54,8 @@ def check_path_and_clean(path) -> None:
                     os.unlink(file_path)
                 elif os.path.isdir(file_path):
                     shutil.rmtree(file_path)
-            # except there is an error
             except Exception as e:
-                print('Failed to delete %s. Reason: %s' % (file_path, e))
+                logging.error('Failed to delete %s. Reason: %s' % (file_path, e))
     else:
         # else it creates the directory
         os.mkdir(path)
@@ -78,9 +77,8 @@ def check_excel_files(path):
                         os.unlink(file_path)
                     elif os.path.isdir(file_path):
                         shutil.rmtree(file_path)
-                # except there is an error
                 except Exception as e:
-                    print('Failed to delete %s. Reason: %s' % (file_path, e))
+                    logging.error('Failed to delete %s. Reason: %s' % (file_path, e))
 
 def check_variables() -> None:
     """
@@ -95,16 +93,16 @@ def check_variables() -> None:
         CATEGORY_OR_SECTION = wi.get_work_item_variable("category_or_section")
         MONTHS = wi.get_work_item_variable("months")
     except KeyError as e:
-        print("This robot needs 3 variables to run: search, category_or_section and months")
-        print(e)
-        sys.exit("Please add it as Work Item in the Control Room")
+        logging.ERROR("This robot needs 3 variables to run: search, category_or_section and months")
+        logging.ERROR("Set them from the control room")
+        logging.ERROR(e)
 
 def init_process() -> Selenium:
     """
     The function performs checks on the output path, including checking the images directory and Excel
     files. Also initialize the browser instance and return it
     """
-    logging.INFO("Starting [general][init_process]")
+    logging.info("Starting [general][init_process]")
     browser = configure_browser()
     check_variables()
     output_path = get_output_path()
@@ -114,5 +112,5 @@ def init_process() -> Selenium:
     check_path_and_clean(images_path)
     check_excel_files(output_path)
 
-    logging.INFO("Ending [general][init_process]")
+    logging.info("Ending [general][init_process]")
     return browser

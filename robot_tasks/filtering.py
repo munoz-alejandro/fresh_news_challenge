@@ -95,12 +95,9 @@ def generic_get_values_from_ul(browser: Selenium, type: str):
             # Append the text to response
             sections.append(text)
         except NoSuchElementException:
-            print(f"this span ({span_text}) doesn't have news qty")
             sections.append(span_text)
         except StaleElementReferenceException as e:
-            print(e)
-
-    print(sections)
+            pass
     return sections
 
 
@@ -216,7 +213,7 @@ def determine_type_or_section(news_section, news_type, options):
 
 
 def filter_category_news(browser):
-    logging.INFO("Starting [filtering][filter_category_news]")
+    logging.info("Starting [filtering][filter_category_news]")
     selections = get_variable("category_or_section")
     month = get_variable("months")
 
@@ -244,4 +241,4 @@ def filter_category_news(browser):
     if type_or_section == "type":
         generic_apply_filter(browser, news_types, selections, type_or_section)
 
-    logging.INFO("Ending [filtering][filter_category_news]")
+    logging.info("Ending [filtering][filter_category_news]")

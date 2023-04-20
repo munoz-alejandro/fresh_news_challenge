@@ -43,7 +43,7 @@ def get_calculated_data(data: list) -> list:
     money (as determined by the `find_money_in_text` function) and the count of search phrases in the
     text (as determined by the `count_search_phrases` function)
     """
-    logging.INFO("Starting [calculations][get_calculated_data]")
+    logging.info("Starting [calculations][get_calculated_data]")
 
     search = get_variable("search")
     # data information contains
@@ -76,9 +76,7 @@ def get_calculated_data(data: list) -> list:
             unique_images.append(image_name)
             images_data.append([image_name, new[3]])
 
-    print(len(data_with_extra_info))
-
-    logging.INFO("Ending [calculations][get_calculated_data]")
+    logging.info("Ending [calculations][get_calculated_data]")
     return [data_with_extra_info, images_data]
 
 
