@@ -1,5 +1,6 @@
 import requests
 import os
+import shutil
 
 from .utils import get_output_path
 
@@ -41,6 +42,10 @@ def download(data, image_folder):
             with open(file_path, 'wb') as handler:
                 handler.write(img_data)
 
+def zip_images(output_path: str, directory: str) -> None:
+    filename = os.path.join(output_path, "images.zip")
+    shutil.make_archive(filename, 'zip', directory)
+
 def download_images(data: list):
     """
     This function downloads a list of images from URLs and saves them to a specified output path.
@@ -52,7 +57,7 @@ def download_images(data: list):
     #  0 image name | 1 image url
     output_path = get_output_path()
     image_folder = os.path.join(output_path, 'images')
-    img_qty = 1
+    img_qty = 0
     items_downloaded = 0
 
     condition = True
@@ -82,3 +87,5 @@ def download_images(data: list):
         # Avoid infinite loop if after 3 intents it can't download all images
         if tries == 0:
             condition = False
+
+    zip_images(output_path, image_folder)
